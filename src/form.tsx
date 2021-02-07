@@ -1,9 +1,11 @@
 import { Form, Field } from 'react-final-form';
 import { userSchema } from './validation/UserSchema'
 import { setIn } from 'final-form';
-import { User } from './types/user';
+import { User } from './types/user'; 
+import { getFakeData } from 'yup-faker';
 
-const onSubmit = async (values: User) => {;
+
+const onSubmit = async (values: User) => { 
   const validated: User = userSchema.validateSync(values); 
   window.alert(JSON.stringify(validated));
   }
@@ -23,11 +25,13 @@ const validateFormValues = (schema: any  ) => async (values:any) => {
 };
 const validate = validateFormValues(userSchema);
 
-const InitialValues : User = {
-  firstName : 'Deepak',
-  lastNamne : 'Thayyil',
-  phoneNumber : 8147204209,
-}
+// const InitialValues : User = {
+//   firstName : 'Deepak',
+//   lastNamne : 'Thayyil',
+//   phoneNumber : 8147204209,
+// }
+
+const InitialValues = getFakeData(userSchema);
 
 
 export const MyForm = () => (
@@ -69,9 +73,17 @@ export const MyForm = () => (
               </div>
             )}
           </Field>
+          <Field name="email">
+            {({ input, meta }) => (
+              <div>
+                <label>email</label>
+                <input {...input} type="email" placeholder="email" />
+                {meta.error && meta.touched && <span>{meta.error}</span>}
+              </div>
+            )}
+          </Field>
         </div> 
         {submitError && <div className="error">{submitError}</div>}
-
         <button type="submit">Submit</button>
       </form>
     )}
